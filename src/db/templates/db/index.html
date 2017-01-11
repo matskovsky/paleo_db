@@ -1,0 +1,142 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>БД ПИН РАН</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'db/css/style.css' %}" />
+	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Slab:100,200,400,700|Open+Sans:200,400,700">
+</head>
+<body>
+	<div id="app" class="main">
+		<div class="search_input">
+			<div class="collection">
+				[[ chosen_collection ]]
+			</div>
+			[[status_str]]&nbsp;&nbsp;<br /><input class="search" v-model="search_string">
+		</div>
+		<div class="search_result">
+			<div class="search_status">
+				[[search_result]]
+			</div>
+			<li v-for="res in results">
+				<template v-if="status == 'col'">
+					<a v-on:click="chooseCollection" :col_id="res.id">ПИН-[[ res.number ]] - [[ res.dateRegistered_precision ]] - [[ res.content ]] - [[ res.stratigraphicUnit ]] - [[ res.collectors_text ]] - [[ res.location ]]</a>
+				</template>
+				<template v-else>
+					<a v-on:click="chooseCollection" >[[ res.number ]] - [[ res.dateCollected_precision ]] - [[ res.country ]] - [[ res.region ]] - [[ res.regionSpec ]] - [[ res.geologicalContext ]] - [[ res.location ]] - [[ res.sistema ]] - [[ res.yarus ]] - [[ res.notes ]]</a>
+				</template>
+		  </li>
+		</div>
+	</div>
+	<!--
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="https://unpkg.com/vue/dist/vue.js"></script>
+	<script src="https://unpkg.com/lodash@4.13.1/lodash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/vue.resource/1.0.3/vue-resource.min.js"></script>
+	-->
+
+	<script src="{% static 'db/js/jquery-3.1.1.min.js' %}"></script>
+	<script src="{% static 'db/js/vue.js' %}"></script>
+	<script src="{% static 'db/js/lodash.js' %}"></script>
+	<script src="{% static 'db/js/vue-resource.min.js' %}"></script>
+	
+	<script type="text/javascript">
+
+var demo = new Vue({
+    el: '#app',
+	delimiters:  ["[[","]]"],
+    data: {
+        'apptitle': 'PIN DB Search',
+        results: [],
+		search_string: '',
+		search_result: '',
+		chosen_collection: null,
+		status_str: 'Поиск коллекций',
+		status: 'col',
+		col_id: null
+    },
+	watch: {
+	   // whenever question changes, this function will run
+	   search_string: function (newSearch) {
+		 this.search_result = 'Жду окончания ввода...'
+		 this.getSearchResult()
+	   }
+	 },
+    methods: {
+		getSearchResult: _.debounce(
+	      function () {
+	        var vm = this
+			if (vm.search_string.length == 0 && vm.status == 'col') {
+				 this.search_result = ''
+				 vm.results = []
+				return
+	        }
+			if (vm.search_string.length < 3 && isNaN(Number(vm.search_string))) {
+				 this.search_result = 'Введите больше символов...'
+				return
+	        }
+	        vm.search_result = 'Ищу...'
+			if (vm.status == 'col') {
+				api_end = 'http://127.0.0.1:8000/collections.json?q='
+			}
+			else if (vm.status == 'sampl') {
+				api_end = 'http://127.0.0.1:8000/samples.json?'+'col='+vm.col_id+'&q='
+			}
+			this.$http.get(api_end+vm.search_string).then(function (response) {
+                vm.results = response.data.results
+				if (vm.status == 'col') {
+					elem = 'коллекц'
+					if (response.data.count > 10 && response.data.count < 20) {
+						ending1 = 'о';
+						ending2 = 'ий';
+					}
+					else
+						switch (response.data.count%10) {
+							case 1: ending1 = 'а'; ending2 = 'ия'; break;
+							case 2:
+							case 3:
+							case 4: ending1 = 'о'; ending2 = 'ии'; break;
+							default: ending1 = 'о'; ending2 = 'ий';
+						}
+				}
+				else if (vm.status == 'sampl') {
+					elem = 'экземпляр'
+					if (response.data.count > 10 && response.data.count < 20) {
+						ending1 = 'о';
+						ending2 = 'ов';
+					}
+					else
+						switch (response.data.count%10) {
+							case 1: ending1 = ''; ending2 = ''; break;
+							case 2:
+							case 3:
+							case 4: ending2 = 'о'; ending2 = 'а'; break;
+							default: ending1 = 'о'; ending2 = 'ов';
+						}
+				}
+				vm.search_result = 'Найден'+ending1+' '+response.data.count+' '+elem+ending2+':'
+				//console.log(response.data.results)
+            },
+            function (response) {
+            })
+	      },
+	      // This is the number of milliseconds we wait for the
+	      // user to stop typing.
+	      500
+	  ),
+	  	chooseCollection:	function() {
+	  		this.chosen_collection = event.target.text
+	  		this.search_string = ''
+			this.status = 'sampl'
+			this.status_str = 'Поиск экземпляров'
+			this.col_id = $(event.target).attr('col_id')
+	  	}
+    }
+});
+
+	</script>
+</body>
+</html>

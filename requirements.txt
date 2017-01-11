@@ -1,0 +1,4 @@
+Django==1.10.2
+django-mptt==0.8.7
+djangorestframework==3.5.3
+rules==1.2

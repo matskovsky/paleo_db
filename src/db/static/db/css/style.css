@@ -1,0 +1,47 @@
+@charset "UTF-8";
+/* ОСНОВНЫЕ ЦВЕТА */
+body {
+  font-family: "Roboto Slab", "Roboto", serif;
+  font-size: 30px;
+  color: #fff; }
+
+.main {
+  background-color: #607450;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 90%;
+  margin-left: -45%;
+  text-align: center; }
+
+.search_input {
+  background-color: #607450;
+  width: 100%; }
+  .search_input .collection {
+    height: 100px;
+    margin-left: 20%;
+    margin-top: 25px;
+    width: 60%;
+    text-align: center; }
+
+input.search {
+  height: 50px;
+  margin-top: 100px;
+  margin-bottom: 100px;
+  padding-left: 20px;
+  width: 60%;
+  font-size: 24px;
+  text-align: center; }
+
+.search_status {
+  height: 100px;
+  margin-top: -50px; }
+
+.search_result {
+  background-color: #52664A;
+  color: #fff;
+  padding-top: 100px;
+  padding-bottom: 100px;
+  width: 100%; }
+  .search_result li {
+    padding: 20px 70px; }

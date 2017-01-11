@@ -1,0 +1,79 @@
+/* ОСНОВНЫЕ ЦВЕТА */
+$bckgr-green-1: 	#607450
+$bckgr-green-2: 	#52664A
+$button-main-col: 		#D9BE88
+$button-topo-act-col: 		#5A544D
+$button-topo-inact-col: 	#EFEAE1
+$button-subm-col: 		#607450
+$button-cncl-col: 		lighten(#cdbe93, 20%)
+$col-warning: 		#FFC7BC
+$col-warning-text: 		#F8BCAF
+
+$font-fam-open-sans: 'Open Sans',Helvetica,Arial,sans-serif
+$font-fam-roboto: 'Roboto Slab','Roboto',serif
+
+$font-family-sans-serif:  "Helvetica Neue", Helvetica, Arial, sans-serif
+$font-family-serif:       Georgia, "Times New Roman", Times, serif
+//** Default monospace fonts for `<code>`, `<kbd>`, and `<pre>`.
+$font-family-monospace:   Menlo, Monaco, Consolas, "Courier New", monospace
+$font-family-base:        $font-family-sans-serif
+
+$font-size-base:          14px
+$font-size-large:         ceil(($font-size-base * 1.25)) // ~18px
+$font-size-small:         ceil(($font-size-base * 0.85)) // ~12px
+
+$font-size-h1:            floor(($font-size-base * 2.6)) // ~36px
+$font-size-h2:            floor(($font-size-base * 2.15)) // ~30px
+$font-size-h3:            ceil(($font-size-base * 1.7)) // ~24px
+$font-size-h4:            ceil(($font-size-base * 1.25)) // ~18px
+$font-size-h5:            $font-size-base
+$font-size-h6:            ceil(($font-size-base * 0.85)) // ~12px
+
+$img_dir:	'../img/'
+
+
+// ############ =============================== INDEX  =================================================
+body
+	font-family: $font-fam-roboto
+	font-size: $font-size-h2
+	color: #fff
+
+.main
+	background-color: $bckgr-green-1
+	position: absolute
+	top: 0
+	left: 50%
+	width: 90%
+	margin-left: -45%
+	text-align: center
+
+.search_input
+	background-color: $bckgr-green-1
+	width: 100%
+	.collection
+		height: 100px
+		margin-left: 20%
+		margin-top: 25px
+		width: 60%
+		text-align: center
+
+input.search
+	height: 50px
+	margin-top: 100px
+	margin-bottom: 100px
+	padding-left: 20px
+	width: 60%
+	font-size: $font-size-h3
+	text-align: center
+
+.search_status
+	height: 100px
+	margin-top: -50px
+.search_result
+	background-color: $bckgr-green-2
+	color: #fff
+	padding-top: 100px
+	padding-bottom: 100px
+	width: 100%
+	li
+		padding: 20px 70px
